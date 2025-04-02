@@ -1,0 +1,84 @@
+/* Escola_logico: */
+
+CREATE TABLE Curso (
+    Qntd_Disciplinas int,
+    Qntd_Turmas int,
+    Carga_Horaria int,
+    Coordenador varchar(20),
+    ID_Curso int PRIMARY KEY,
+    Qntd_Alunos int,
+    Nome varchar(20),
+    fk_Turma_ID_Turma int
+);
+
+CREATE TABLE Professor (
+    Nome varchar(30),
+    Sobrenome varchar(50),
+    CPF varchar(30),
+    Email varchar(80),
+    Disciplina varchar(30),
+    Data_Nasc date,
+    Salario decimal(10,5),
+    Departamento varchar(20),
+    ID_Prof int PRIMARY KEY,
+    fk_Disciplina_Bases_Tecnologicas text
+);
+
+CREATE TABLE Turma (
+    ID_Turma int PRIMARY KEY,
+    Qntd_Alunos int,
+    Nivel_Ensino varchar(20),
+    representante varchar(30),
+    Coodernador varchar(30),
+    Media_nota decimal(5,5),
+    fk_Aluno_ID_aluno int
+);
+
+CREATE TABLE Aluno (
+    ID_aluno int PRIMARY KEY,
+    Nome varchar(30),
+    CPF varchar(30),
+    Data_Nasc date,
+    Turma varchar(30),
+    Notas int,
+    Sobrenome varchar(50)
+);
+
+CREATE TABLE Disciplina (
+    Nome varchar(30),
+    Professor varchar(20),
+    Carga_Horaria int,
+    Turma varchar(20),
+    Curso varchar(30),
+    Bases_Tecnologicas text PRIMARY KEY
+);
+
+CREATE TABLE Possui (
+    fk_Disciplina_Bases_Tecnologicas text,
+    fk_Curso_ID_Curso int
+);
+ 
+ALTER TABLE Curso ADD CONSTRAINT FK_Curso_2
+    FOREIGN KEY (fk_Turma_ID_Turma)
+    REFERENCES Turma (ID_Turma)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Professor ADD CONSTRAINT FK_Professor_2
+    FOREIGN KEY (fk_Disciplina_Bases_Tecnologicas)
+    REFERENCES Disciplina (Bases_Tecnologicas)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Turma ADD CONSTRAINT FK_Turma_2
+    FOREIGN KEY (fk_Aluno_ID_aluno)
+    REFERENCES Aluno (ID_aluno)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Possui ADD CONSTRAINT FK_Possui_1
+    FOREIGN KEY (fk_Disciplina_Bases_Tecnologicas)
+    REFERENCES Disciplina (Bases_Tecnologicas)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Possui ADD CONSTRAINT FK_Possui_2
+    FOREIGN KEY (fk_Curso_ID_Curso)
+    REFERENCES Curso (ID_Curso)
+    ON DELETE RESTRICT;

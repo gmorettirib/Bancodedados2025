@@ -1,0 +1,80 @@
+/* livr_logico: */
+
+CREATE TABLE Cliente_Telefone_Autor (
+    Nome varchar(60),
+    CPF varchar(30),
+    Telefone varchar(30),
+    Email varchar(50),
+    ID_cliente int,
+    Cod_Pais char(10),
+    DDD char(10),
+    Numero varchar(30),
+    ID_Telefone int,
+    Endereco varchar(255),
+    ID_Autor int,
+    Sobrenome varchar(30),
+    Direitos_Autorais decimal(5,3),
+    fk_Livro_ID_livro char(20),
+    fk_Venda_ID_venda int,
+    fk_Venda_ID_venda_ int,
+    fk_Item_Venda_ID_Livro int,
+    PRIMARY KEY (ID_cliente, ID_Telefone, ID_Autor)
+);
+
+CREATE TABLE Item_Venda (
+    Nome varchar(100),
+    Autor varchar(60),
+    Qntd int,
+    ID_Livro int PRIMARY KEY
+);
+
+CREATE TABLE Livro (
+    Nome varchar(100),
+    Autor varchar(60),
+    ID_livro char(20) PRIMARY KEY,
+    Valor decimal(5,3),
+    Qntd_venda int
+);
+
+CREATE TABLE Endereco (
+    Cep varchar(30),
+    Complemento varchar(255),
+    Ul char(2),
+    Bairro varchar(255),
+    Cidade varchar(255),
+    Rua varchar(50),
+    Num varchar(30),
+    Cod_Endereco int PRIMARY KEY,
+    fk_Cliente_Telefone_Autor_ID_cliente int,
+    fk_Cliente_Telefone_Autor_ID_Telefone int,
+    fk_Cliente_Telefone_Autor_ID_Autor int,
+    fk_Cliente_Telefone_Autor_ID_cliente_ int,
+    fk_Cliente_Telefone_Autor_ID_Telefone_ int,
+    fk_Cliente_Telefone_Autor_ID_Autor_ int
+);
+
+CREATE TABLE Venda (
+    Preco decimal(5,3),
+    Data datetime,
+    ID_venda int PRIMARY KEY,
+    Nome_cliente varchar(60)
+);
+ 
+ALTER TABLE Cliente_Telefone_Autor ADD CONSTRAINT FK_Cliente_Telefone_Autor_2
+    FOREIGN KEY (fk_Livro_ID_livro)
+    REFERENCES Livro (ID_livro);
+ 
+ALTER TABLE Cliente_Telefone_Autor ADD CONSTRAINT FK_Cliente_Telefone_Autor_3
+    FOREIGN KEY (fk_Venda_ID_venda, fk_Venda_ID_venda_)
+    REFERENCES Venda (ID_venda, ID_venda)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Cliente_Telefone_Autor ADD CONSTRAINT FK_Cliente_Telefone_Autor_4
+    FOREIGN KEY (fk_Item_Venda_ID_Livro)
+    REFERENCES Item_Venda (ID_Livro)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Endereco ADD CONSTRAINT FK_Endereco_2
+    FOREIGN KEY (fk_Cliente_Telefone_Autor_ID_cliente, fk_Cliente_Telefone_Autor_ID_Telefone, fk_Cliente_Telefone_Autor_ID_Autor, fk_Cliente_Telefone_Autor_ID_cliente_, fk_Cliente_Telefone_Autor_ID_Telefone_, fk_Cliente_Telefone_Autor_ID_Autor_)
+    REFERENCES Cliente_Telefone_Autor (ID_cliente, ID_Telefone, ID_Autor, ID_cliente, ID_Telefone, ID_Autor)
+    ON DELETE RESTRICT;

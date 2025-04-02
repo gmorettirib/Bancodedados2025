@@ -1,0 +1,95 @@
+/* imob_logico: */
+
+CREATE TABLE Proprietario (
+    ID_prop int PRIMARY KEY,
+    nome varchar(30),
+    datacadastro date,
+    email varchar(30),
+    telefone varchar(20),
+    endereco varchar(255),
+    cpf varchar(20),
+    fk_Corretor_ID_cor int
+);
+
+CREATE TABLE Endereco (
+    ID_end int PRIMARY KEY,
+    rua varchar(80),
+    bairro varchar(50),
+    cidade varchar(30),
+    complemento varchar(80),
+    num int,
+    cep varchar(20)
+);
+
+CREATE TABLE Corretor (
+    ID_cor int PRIMARY KEY,
+    nome varchar(30),
+    email varchar(30),
+    telefone varchar(20),
+    cpf varchar(20),
+    endereco varchar(255),
+    empresa bit,
+    fk_Endereco_ID_end int
+);
+
+CREATE TABLE Imovel (
+    ID_imov int PRIMARY KEY,
+    tamanho int,
+    Qntd_salas int,
+    tipo varchar(100),
+    quintal bit,
+    endereco varchar(255),
+    preco int,
+    fk_Proprietario_ID_prop int,
+    fk_Endereco_ID_end int
+);
+
+CREATE TABLE Inquilino (
+    ID_inq int PRIMARY KEY,
+    nome varchar(30),
+    telefone varchar(20),
+    cpf varchar(20),
+    data_nasc date,
+    email varchar(30),
+    fk_Corretor_ID_cor int
+);
+
+CREATE TABLE Aluga (
+    fk_Inquilino_ID_inq int,
+    fk_Imovel_ID_imov int
+);
+ 
+ALTER TABLE Proprietario ADD CONSTRAINT FK_Proprietario_2
+    FOREIGN KEY (fk_Corretor_ID_cor)
+    REFERENCES Corretor (ID_cor)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Corretor ADD CONSTRAINT FK_Corretor_2
+    FOREIGN KEY (fk_Endereco_ID_end)
+    REFERENCES Endereco (ID_end)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Imovel ADD CONSTRAINT FK_Imovel_2
+    FOREIGN KEY (fk_Proprietario_ID_prop)
+    REFERENCES Proprietario (ID_prop)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Imovel ADD CONSTRAINT FK_Imovel_3
+    FOREIGN KEY (fk_Endereco_ID_end)
+    REFERENCES Endereco (ID_end)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Inquilino ADD CONSTRAINT FK_Inquilino_2
+    FOREIGN KEY (fk_Corretor_ID_cor)
+    REFERENCES Corretor (ID_cor)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Aluga ADD CONSTRAINT FK_Aluga_1
+    FOREIGN KEY (fk_Inquilino_ID_inq)
+    REFERENCES Inquilino (ID_inq)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Aluga ADD CONSTRAINT FK_Aluga_2
+    FOREIGN KEY (fk_Imovel_ID_imov)
+    REFERENCES Imovel (ID_imov)
+    ON DELETE RESTRICT;
